@@ -16,4 +16,5 @@ if __name__ == "__main__":
     print("Testing connection to database...")
     client = Client()
     client.connect_to_database()
+    print(client.fetch_all("inventory"))
     client.close_connection()

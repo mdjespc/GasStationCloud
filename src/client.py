@@ -29,3 +29,20 @@ class Client:
             self.db.close()
             self.is_connected = False
             print("Database connection closed.")
+
+    
+    #Retrieves all data entries in the given table and returns it as a two-dimensional list.
+    def fetch_all(self, table_name):
+        if not self.cursor:
+            raise ConnectionError("Database connection has not yet been established.")
+        
+        try:
+            query = f'''
+                    SELECT *
+                    FROM {table_name}
+                    '''
+            self.cursor.execute(query)
+            return self.cursor.fetchall()
+
+        except mysql.connector.Error as err:
+            raise ConnectionError("Error retrieving table data:", err)
