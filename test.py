@@ -1,5 +1,5 @@
-from src.item import Item 
-from src.client import Client
+from model.item import Item 
+from model.client import Client
 
 if __name__ == "__main__":
     #Lines of code testing go here
