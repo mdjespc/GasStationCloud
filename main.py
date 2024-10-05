@@ -1,8 +1,8 @@
-from src.item import Item
+from controller import Controller
 
 def main():
-    pass
+    app = Controller()
 
 
 if __name__ == "__main__":
-    pass 
+    main()
