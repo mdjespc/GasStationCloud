@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import Label, Button, Listbox, Scrollbar
 from tkinter import messagebox, simpledialog, filedialog, scrolledtext
 from PIL import Image, ImageTk
 import os
@@ -41,18 +42,39 @@ class ProjectWindow:
         help_menu.add_command(label = "About", command = self._show_about_popup)
         menubar.add_cascade(label="Help", menu=help_menu)
 
+        #Inventory labels for the business metrics
+        self.net_value_label = Label(self.root, text = "Net Value")
+        self.net_value_label.grid(row = 0, column = 0)
+
+        self.average_value_label = Label(self.root, text = "Average Value per Unit")
+        self.average_value_label.grid(row = 1, column = 0)
+
+        self.unit_count_label = Label(self.root, text = "Number of units in inventory")
+        self.unit_count_label.grid(row = 2, column = 0)
+
+        self.category_count_label = Label(self.root, text = "Number of categories")
+        self.category_count_label.grid(row = 3, column = 0)
+
+
+        #Inventory scrollable listbox
+        self.inventory_listbox = Listbox(self.root)
+        self.inventory_listbox.grid(row = 1, column = 1)
+        self.inventory_listbox_scrollbar = Scrollbar(self.inventory_listbox)
+        self.inventory_listbox_scrollbar.grid(row = 0 , column = 0)
+
+
         #Inventory management buttons
-        self.create_button = tk.Button(self.root, text = "Insert to table")
-        self.create_button.grid(row = 2, column = 5, padx = 10, pady = 10)
+        self.create_button = Button(self.root, text = "Insert to table")
+        self.create_button.grid(row = 0, column = 2, padx = 10, pady = 10)
 
-        self.filter_button = tk.Button(self.root, text = "Filter")
-        self.filter_button.grid(row = 3, column = 5, padx = 10, pady = 10)
+        self.filter_button = Button(self.root, text = "Filter")
+        self.filter_button.grid(row = 1, column = 2, padx = 10, pady = 10)
 
-        self.edit_button = tk.Button(self.root, text = "Edit")
-        self.edit_button.grid(row = 4, column = 5, padx = 10, pady = 10)
+        self.edit_button = Button(self.root, text = "Edit")
+        self.edit_button.grid(row = 2, column = 2, padx = 10, pady = 10)
 
-        self.delete_button = tk.Button(self.root, text = "Delete from table")
-        self.delete_button.grid(row = 5, column = 5, padx = 10, pady = 10)
+        self.delete_button = Button(self.root, text = "Delete from table")
+        self.delete_button.grid(row = 3, column = 2, padx = 10, pady = 10)
 
     
     def _show_about_popup(self):
