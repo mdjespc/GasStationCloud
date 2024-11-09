@@ -7,7 +7,6 @@ class Item:
     -product_desc
     -category
     -price
-    -timestamp (tentative)
     '''
     def __init__(self):
         self._id = hash(self)

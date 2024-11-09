@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Label, Button, Listbox, Scrollbar
+from tkinter import Label, Button, Entry, Listbox, Scrollbar
 from tkinter import messagebox, simpledialog, filedialog, scrolledtext
 from PIL import Image, ImageTk
 import os
@@ -76,6 +76,37 @@ class ProjectWindow:
         self.delete_button = Button(self.root, text = "Delete from table")
         self.delete_button.grid(row = 3, column = 2, padx = 10, pady = 10)
 
+    def _show_insert_window(self):
+        insert_window = tk.Toplevel(self.root)
+        insert_window.geometry("500x700")
+
+        product_name_label = Label(insert_window, text = "Product name: ")
+        product_name_label.grid(row = 0, column = 0)
+        product_name_entry = Entry(insert_window)
+        product_name_entry.grid(row = 0, column = 2)
+        product_name_entry.delete(0, tk.END)
+
+        product_desc_label = Label(insert_window, text = "Product description: ")
+        product_desc_label.grid(row = 1, column = 0)
+        product_desc_entry = Entry(insert_window)
+        product_desc_entry.grid(row = 1, column = 2)
+        product_desc_entry.delete(0, tk.END)
+
+        product_category_label = Label(insert_window, text = "Product category: ")
+        product_category_label.grid(row = 2, column = 0)
+        product_category_entry = Entry(insert_window)
+        product_category_entry.grid(row = 2, column = 2)
+        product_category_entry.delete(0, tk.END)
+
+        product_price_label = Label(insert_window, text = "Product price: ")
+        product_price_label.grid(row = 3, column = 0)
+        product_price_entry = Entry(insert_window)
+        product_price_entry.grid(row = 3, column = 2)
+        product_price_entry.delete(0, tk.END)
+
+        submit_button = Button(insert_window, text="Submit")
+        submit_button.grid(row = 4, column = 1)
+
     
     def _show_about_popup(self):
         """Display an 'About' popup message."""
@@ -94,7 +125,7 @@ class ProjectWindow:
 
     def bind_commands(self):
         #List all buttons in the main window and bind them to a command
-        pass
+        self.create_button.config(command = self.callbacks["Insert"])
 
 
     def run(self):
