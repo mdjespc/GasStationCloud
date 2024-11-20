@@ -76,9 +76,11 @@ class ProjectWindow:
         self.delete_button = Button(self.root, text = "Delete from table")
         self.delete_button.grid(row = 3, column = 2, padx = 10, pady = 10)
 
-    def _show_insert_window(self):
+    def _show_insert_window(self, get_product_details):
         insert_window = tk.Toplevel(self.root)
-        insert_window.geometry("500x700")
+        insert_window.geometry("500x300")
+
+        self.product_details = dict()
 
         product_name_label = Label(insert_window, text = "Product name: ")
         product_name_label.grid(row = 0, column = 0)
@@ -104,7 +106,21 @@ class ProjectWindow:
         product_price_entry.grid(row = 3, column = 2)
         product_price_entry.delete(0, tk.END)
 
-        submit_button = Button(insert_window, text="Submit")
+        #Callback for submit button
+        def get_entries():
+            self.product_details = {
+                "product_name" : product_name_entry.get(),
+                "product_desc" : product_desc_entry.get(),
+                "product_category" : product_category_entry.get(),
+                "product_price" : product_price_entry.get()
+            }
+            get_product_details()
+            insert_window.destroy()
+
+            #messagebox.showinfo("New Item", "New item has been added to the database.")
+            
+
+        submit_button = Button(insert_window, text="Submit", command = get_entries)
         submit_button.grid(row = 4, column = 1)
 
     

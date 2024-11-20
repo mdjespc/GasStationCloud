@@ -17,5 +17,13 @@ class Controller(object):
         self.view.run()
     
     def insert_button_pressed(self):
-        self.view._show_insert_window()
-        #Once the window is closed, grab all values entered and submit to client
+        def get_product_details():
+            #Once the window is closed, grab all values entered and submit to client
+            product_details = self.view.product_details
+            print(product_details)
+
+        self.view._show_insert_window(get_product_details)
+        
+        
+        
+        
