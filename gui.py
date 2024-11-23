@@ -76,7 +76,7 @@ class ProjectWindow:
         self.delete_button = Button(self.root, text = "Delete from table")
         self.delete_button.grid(row = 3, column = 2, padx = 10, pady = 10)
 
-    def _show_insert_window(self, get_product_details):
+    def show_insert_window(self, submit_product_details):
         insert_window = tk.Toplevel(self.root)
         insert_window.geometry("500x300")
 
@@ -114,7 +114,7 @@ class ProjectWindow:
                 "product_category" : product_category_entry.get(),
                 "product_price" : product_price_entry.get()
             }
-            get_product_details()
+            submit_product_details()
             insert_window.destroy()
 
             #messagebox.showinfo("New Item", "New item has been added to the database.")
@@ -124,6 +124,11 @@ class ProjectWindow:
         submit_button.grid(row = 4, column = 1)
 
     
+    def show_connection_error_popup(self):
+        """Display a database connection error popup message"""
+        error_text = "You are currently disconnected from the database."
+        messagebox.showerror("Operation Unavailable", error_text)
+
     def _show_about_popup(self):
         """Display an 'About' popup message."""
         about_text = "My Simple Application\nVersion 1.0"
