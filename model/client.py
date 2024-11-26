@@ -72,7 +72,7 @@ class Client:
         try:
             query = f'''
                     INSERT INTO {table_name}
-                    VALUES ({",".join(["%s" for value in values])})
+                    VALUES (NULL,{",".join(["%s" for value in values])})
                     '''
             #Execute the SQL query with new entry information
             self.cursor.execute(query, values)

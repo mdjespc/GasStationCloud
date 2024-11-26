@@ -35,5 +35,5 @@ class Controller(object):
             self.view.show_connection_error_popup()
             return
 
-        self.client.insert("inventory", 20, product_name, product_desc, product_category, product_price)
+        self.client.insert("inventory", product_name, product_desc, product_category, product_price)
         

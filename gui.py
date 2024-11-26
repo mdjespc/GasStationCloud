@@ -112,7 +112,7 @@ class ProjectWindow:
                 "product_name" : product_name_entry.get(),
                 "product_desc" : product_desc_entry.get(),
                 "product_category" : product_category_entry.get(),
-                "product_price" : product_price_entry.get()
+                "product_price" : float(product_price_entry.get())
             }
             submit_product_details()
             insert_window.destroy()
