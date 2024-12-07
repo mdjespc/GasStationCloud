@@ -12,12 +12,24 @@ class Controller(object):
         #Add callbacks
         self.view.add_callbacks("Insert", self.insert_button_pressed)
 
-
         #Bind command
         self.view.bind_commands()
 
+        #Insert items into listbox
+        items = self.fetch_inventory()
+        self.view.update_inventory_listbox(items)
+
         self.view.run()
     
+
+    def fetch_inventory(self):
+        items = self.client.fetch_all("inventory")
+
+        #Process the fetched items into a list of strings
+        items = [",".join([str(value) for value in item[1:]]) for item in items]
+        print(items)
+        return items
+
 
     def insert_button_pressed(self):
         self.view.show_insert_window(self.submit_product_details)

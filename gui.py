@@ -59,8 +59,9 @@ class ProjectWindow:
         #Inventory scrollable listbox
         self.inventory_listbox = Listbox(self.root)
         self.inventory_listbox.grid(row = 1, column = 1)
-        self.inventory_listbox_scrollbar = Scrollbar(self.inventory_listbox)
-        self.inventory_listbox_scrollbar.grid(row = 0 , column = 0)
+        #self.inventory_listbox_scrollbar = Scrollbar(self.inventory_listbox)
+        #self.inventory_listbox_scrollbar.grid(row = 0 , column = 0)
+        
 
 
         #Inventory management buttons
@@ -75,6 +76,11 @@ class ProjectWindow:
 
         self.delete_button = Button(self.root, text = "Delete from table")
         self.delete_button.grid(row = 3, column = 2, padx = 10, pady = 10)
+
+    def update_inventory_listbox(self, items):
+        for item in items:
+            self.inventory_listbox.insert(tk.END, item)
+
 
     def show_insert_window(self, submit_product_details):
         insert_window = tk.Toplevel(self.root)
