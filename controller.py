@@ -11,6 +11,7 @@ class Controller(object):
         
         #Add callbacks
         self.view.add_callbacks("Insert", self.insert_button_pressed)
+        self.view.add_callbacks("Delete", self.delete_button_pressed)
 
         #Bind command
         self.view.bind_commands()
@@ -26,8 +27,7 @@ class Controller(object):
         items = self.client.fetch_all("inventory")
 
         #Process the fetched items into a list of strings
-        items = [",".join([str(value) for value in item[1:]]) for item in items]
-        print(items)
+        items = [",".join([str(value) for value in item]) for item in items]
         return items
 
 
@@ -42,10 +42,22 @@ class Controller(object):
         product_desc = product_details["product_desc"]
         product_category = product_details["product_category"]
         product_price = product_details["product_price"]
+        product_quantity = product_details["product_quantity"]
 
         if not self.client.is_connected:
             self.view.show_connection_error_popup()
             return
 
-        self.client.insert("inventory", product_name, product_desc, product_category, product_price)
+        for i in range(product_quantity):
+            self.client.insert("inventory", product_name, product_desc, product_category, product_price)
         
+        self.view.update_inventory_listbox(self.fetch_inventory())
+
+    def delete_button_pressed(self):
+        if not self.view.selected_item_id:
+            print("No item has been selected.")
+            return
+        
+        self.client.delete("inventory", self.view.selected_item_id)
+        self.view.selected_item_id = None
+        self.view.update_inventory_listbox(self.fetch_inventory())

@@ -59,6 +59,10 @@ class ProjectWindow:
         #Inventory scrollable listbox
         self.inventory_listbox = Listbox(self.root)
         self.inventory_listbox.grid(row = 1, column = 1)
+        #Bind the selection event
+        self.inventory_listbox.bind("<<ListboxSelect>>", self.on_listbox_select)
+        self.selected_item_id = None
+
         #self.inventory_listbox_scrollbar = Scrollbar(self.inventory_listbox)
         #self.inventory_listbox_scrollbar.grid(row = 0 , column = 0)
         
@@ -77,7 +81,19 @@ class ProjectWindow:
         self.delete_button = Button(self.root, text = "Delete from table")
         self.delete_button.grid(row = 3, column = 2, padx = 10, pady = 10)
 
+    # Function to handle item selection
+    def on_listbox_select(self, event):
+        selection = self.inventory_listbox.curselection()
+        if selection:
+            index = selection[0]
+            selected_item = self.inventory_listbox.get(index)
+            self.selected_item_id = int(selected_item.split(",")[0])
+            print("Selected:", selected_item)
+            print("ID: ", self.selected_item_id)
+            
+
     def update_inventory_listbox(self, items):
+        self.inventory_listbox.delete(0, tk.END)
         for item in items:
             self.inventory_listbox.insert(tk.END, item)
 
@@ -112,13 +128,23 @@ class ProjectWindow:
         product_price_entry.grid(row = 3, column = 2)
         product_price_entry.delete(0, tk.END)
 
+
+        product_quantity_label = Label(insert_window, text = "Quantity: ")
+        product_quantity_label.grid(row = 4, column = 0)
+        product_quantity_entry = Entry(insert_window)
+        product_quantity_entry.grid(row = 4, column = 2)
+        product_quantity_entry.delete(0, tk.END)
+        product_quantity_entry.insert(0, "1")
+        
+
         #Callback for submit button
         def get_entries():
             self.product_details = {
                 "product_name" : product_name_entry.get(),
                 "product_desc" : product_desc_entry.get(),
                 "product_category" : product_category_entry.get(),
-                "product_price" : float(product_price_entry.get())
+                "product_price" : float(product_price_entry.get()),
+                "product_quantity" : int(product_quantity_entry.get())
             }
             submit_product_details()
             insert_window.destroy()
@@ -127,7 +153,7 @@ class ProjectWindow:
             
 
         submit_button = Button(insert_window, text="Submit", command = get_entries)
-        submit_button.grid(row = 4, column = 1)
+        submit_button.grid(row = 6, column = 1)
 
     
     def show_connection_error_popup(self):
@@ -153,6 +179,7 @@ class ProjectWindow:
     def bind_commands(self):
         #List all buttons in the main window and bind them to a command
         self.create_button.config(command = self.callbacks["Insert"])
+        self.delete_button.config(command = self.callbacks["Delete"])
 
 
     def run(self):

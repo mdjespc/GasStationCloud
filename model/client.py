@@ -98,5 +98,18 @@ class Client:
             print(f"Data row deleted from {table_name} successfully.")
         except mysql.connector.Error as err:
             raise ConnectionError("Error deleting data from table:", err)
-        
+    
+    def update(self, table_name, id, *values):
+        if not self.cursor:
+            raise ConnectionError("Database connection has not yet been established.")
+        try:
+            query = f'''
+                    REPLACE INTO {table_name}
+                    VALUES (%s,{",".join(["%s" for value in values])})
+                    '''
+            self.cursor.execute(query, (id, values))
+            self.db.commit()
+            print(f"Data row updated in {table_name} successfully.")
+        except mysql.connector.Error as err:
+            raise ConnectionError("Error updating data row:", err)
         
