@@ -200,11 +200,11 @@ class ProjectWindow:
         #Callback for submit button
         def get_entries():
             self.product_details = {
-                "id" : self.selected_item_id,
+                "id" : str(self.selected_item_id),
                 "product_name" : product_name_entry.get(),
                 "product_desc" : product_desc_entry.get(),
                 "product_category" : product_category_entry.get(),
-                "product_price" : float(product_price_entry.get()),
+                "product_price" : str(product_price_entry.get()),
             }
             submit_product_details()
             update_window.destroy()
