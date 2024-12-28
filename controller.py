@@ -12,6 +12,7 @@ class Controller(object):
         #Add callbacks
         self.view.add_callbacks("Insert", self.insert_button_pressed)
         self.view.add_callbacks("Delete", self.delete_button_pressed)
+        self.view.add_callbacks("Update", self.update_button_pressed)
 
         #Bind command
         self.view.bind_commands()
@@ -32,10 +33,13 @@ class Controller(object):
 
 
     def insert_button_pressed(self):
-        self.view.show_insert_window(self.submit_product_details)
+        self.view.show_insert_window(self.submit_product_insert_details)
+
+    def update_button_pressed(self):
+        self.view.show_update_window(self.submit_product_update_details)
         
         
-    def submit_product_details(self):
+    def submit_product_insert_details(self):
         #Once the window is closed, grab all values entered and submit to client
         product_details = self.view.product_details
         product_name = product_details["product_name"]
@@ -52,6 +56,25 @@ class Controller(object):
             self.client.insert("inventory", product_name, product_desc, product_category, product_price)
         
         self.view.update_inventory_listbox(self.fetch_inventory())
+
+    def submit_product_update_details(self):
+        product_details = self.view.product_details
+        product_id = product_details["id"]
+        product_name = product_details["product_name"]
+        product_desc = product_details["product_desc"]
+        product_category = product_details["product_category"]
+        product_price = product_details["product_price"]
+
+
+        if not self.client.is_connected:
+            self.view.show_connection_error_popup()
+            return
+
+        
+        self.client.update("inventory", product_id, product_name, product_desc, product_category, product_price)
+        
+        self.view.update_inventory_listbox(self.fetch_inventory())
+
 
     def delete_button_pressed(self):
         if not self.view.selected_item_id:

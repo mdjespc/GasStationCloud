@@ -107,7 +107,7 @@ class Client:
                     REPLACE INTO {table_name}
                     VALUES (%s,{",".join(["%s" for value in values])})
                     '''
-            self.cursor.execute(query, (id, values))
+            self.cursor.execute(query, id, values)
             self.db.commit()
             print(f"Data row updated in {table_name} successfully.")
         except mysql.connector.Error as err:

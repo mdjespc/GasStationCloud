@@ -62,6 +62,7 @@ class ProjectWindow:
         #Bind the selection event
         self.inventory_listbox.bind("<<ListboxSelect>>", self.on_listbox_select)
         self.selected_item_id = None
+        self.selected_item = None
 
         #self.inventory_listbox_scrollbar = Scrollbar(self.inventory_listbox)
         #self.inventory_listbox_scrollbar.grid(row = 0 , column = 0)
@@ -86,9 +87,9 @@ class ProjectWindow:
         selection = self.inventory_listbox.curselection()
         if selection:
             index = selection[0]
-            selected_item = self.inventory_listbox.get(index)
-            self.selected_item_id = int(selected_item.split(",")[0])
-            print("Selected:", selected_item)
+            self.selected_item = self.inventory_listbox.get(index)
+            self.selected_item_id = int(self.selected_item.split(",")[0])
+            print("Selected:", self.selected_item)
             print("ID: ", self.selected_item_id)
             
 
@@ -156,6 +157,62 @@ class ProjectWindow:
         submit_button.grid(row = 6, column = 1)
 
     
+    def show_update_window(self, submit_product_details):
+        if not self.selected_item:
+            print("Item must be selected before performing the EDIT button.")
+            return
+
+        update_window = tk.Toplevel(self.root)
+        update_window.geometry("500x300")
+
+        self.product_details = dict()
+        product_name, product_desc, product_category, product_price = self.selected_item.split(",")[1:]
+
+
+        product_name_label = Label(update_window, text = "Product name: ")
+        product_name_label.grid(row = 0, column = 0)
+        product_name_entry = Entry(update_window)
+        product_name_entry.grid(row = 0, column = 2)
+        product_name_entry.delete(0, tk.END)
+        product_name_entry.insert(0, product_name)
+
+        product_desc_label = Label(update_window, text = "Product description: ")
+        product_desc_label.grid(row = 1, column = 0)
+        product_desc_entry = Entry(update_window)
+        product_desc_entry.grid(row = 1, column = 2)
+        product_desc_entry.delete(0, tk.END)
+        product_desc_entry.insert(0, product_desc)
+
+        product_category_label = Label(update_window, text = "Product category: ")
+        product_category_label.grid(row = 2, column = 0)
+        product_category_entry = Entry(update_window)
+        product_category_entry.grid(row = 2, column = 2)
+        product_category_entry.delete(0, tk.END)
+        product_category_entry.insert(0, product_category)
+
+        product_price_label = Label(update_window, text = "Product price: ")
+        product_price_label.grid(row = 3, column = 0)
+        product_price_entry = Entry(update_window)
+        product_price_entry.grid(row = 3, column = 2)
+        product_price_entry.delete(0, tk.END)
+        product_price_entry.insert(0, product_price)
+
+        #Callback for submit button
+        def get_entries():
+            self.product_details = {
+                "id" : self.selected_item_id,
+                "product_name" : product_name_entry.get(),
+                "product_desc" : product_desc_entry.get(),
+                "product_category" : product_category_entry.get(),
+                "product_price" : float(product_price_entry.get()),
+            }
+            submit_product_details()
+            update_window.destroy()
+            
+
+        submit_button = Button(update_window, text="Submit", command = get_entries)
+        submit_button.grid(row = 6, column = 1)
+
     def show_connection_error_popup(self):
         """Display a database connection error popup message"""
         error_text = "You are currently disconnected from the database."
@@ -180,6 +237,7 @@ class ProjectWindow:
         #List all buttons in the main window and bind them to a command
         self.create_button.config(command = self.callbacks["Insert"])
         self.delete_button.config(command = self.callbacks["Delete"])
+        self.edit_button.config(command = self.callbacks["Update"])
 
 
     def run(self):
