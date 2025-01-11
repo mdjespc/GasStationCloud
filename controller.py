@@ -79,7 +79,20 @@ class Controller(object):
         self.view.update_inventory_listbox(self.fetch_inventory())
 
     def submit_filter_settings(self):
-        pass
+        search_keys = self.view.filter_settings
+
+        name_search_key = search_keys["name_filter"]
+        desc_search_key = search_keys["desc_filter"]
+        category_search_key = search_keys["category_filter"]
+        min_price_search_key = search_keys["min_price_filter"]
+        max_price_search_key = search_keys["max_price_filter"]
+
+        if not self.client.is_connected:
+            self.view.show_connection_error_popup()
+            return
+
+        
+
 
     def delete_button_pressed(self):
         if not self.view.selected_item_id:
