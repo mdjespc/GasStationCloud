@@ -213,6 +213,63 @@ class ProjectWindow:
         submit_button = Button(update_window, text="Submit", command = get_entries)
         submit_button.grid(row = 6, column = 1)
 
+    def show_filter_window(self, submit_filter_settings):
+        '''
+        -The "Filter by name" entry searches in both item name and item desc categories
+        -Category should be a single word (or drop-down menu)
+        -Price value should be a range with a minimum and maximum value (can be a slider)
+
+        Once the user enters "Submit", return a dictionary to the controller with all filter settings.
+        Run the appropriate query for all filter settings selected (multi-functional query that works for all columns in DB)
+        Display the search results by passing them on to the "update_inventory_listbox" method
+        '''
+        filter_window = tk.Toplevel(self.root)
+        filter_window.geometry("500x300")
+
+        self.filter_settings = dict()
+
+        name_filter_label = Label(filter_window, text = "Filter by name:")
+        name_filter_label.grid(row=0, column=0)
+        name_filter_entry = Entry(filter_window)
+        name_filter_entry.grid(row=0, column=1)
+        name_filter_entry.delete(0, tk.END)
+
+        category_filter_label = Label(filter_window, text = "Filter by category:")
+        category_filter_label.grid(row=1, column=0)
+        category_filter_entry = Entry(filter_window)
+        category_filter_entry.grid(row=1, column=1)
+        category_filter_entry.delete(0, tk.END)
+
+        price_filter_label = Label(filter_window, text = "Filter by price:")
+        price_filter_label.grid(row = 2, column = 0)
+        min_price_label = Label(filter_window, text = "Min:")
+        min_price_label.grid(row=3, column = 0)
+        min_price_entry = Entry(filter_window)
+        min_price_entry.grid(row=3, column=1)
+        min_price_entry.delete(0, tk.END)
+        max_price_label = Label(filter_window, text = "Max:")
+        max_price_label.grid(row=3, column = 2)
+        max_price_entry = Entry(filter_window)
+        max_price_entry.grid(row=3, column=3)
+        name_filter_entry.delete(0, tk.END)
+
+        #Callback for submit button
+        def get_entries():
+            self.filter_settings = {
+                "name_filter" : name_filter_entry.get(),
+                "desc_filter" : name_filter_entry.get(),
+                "category_filter" : category_filter_entry.get(),
+                "min_price_filter" : float(min_price_entry.get()),
+                "max_price_filter" : float(max_price_entry.get())
+            }
+
+            submit_filter_settings()
+            filter_window.destroy()
+
+        submit_button = Button(filter_window, text="Filter", command = get_entries)
+        submit_button.grid(row = 4, column = 1)
+
+
     def show_connection_error_popup(self):
         """Display a database connection error popup message"""
         error_text = "You are currently disconnected from the database."
@@ -238,6 +295,7 @@ class ProjectWindow:
         self.create_button.config(command = self.callbacks["Insert"])
         self.delete_button.config(command = self.callbacks["Delete"])
         self.edit_button.config(command = self.callbacks["Update"])
+        self.filter_button.config(command = self.callbacks["Filter"])
 
 
     def run(self):

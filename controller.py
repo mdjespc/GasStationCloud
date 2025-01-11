@@ -13,6 +13,7 @@ class Controller(object):
         self.view.add_callbacks("Insert", self.insert_button_pressed)
         self.view.add_callbacks("Delete", self.delete_button_pressed)
         self.view.add_callbacks("Update", self.update_button_pressed)
+        self.view.add_callbacks("Filter", self.filter_button_pressed)
 
         #Bind command
         self.view.bind_commands()
@@ -38,7 +39,9 @@ class Controller(object):
     def update_button_pressed(self):
         self.view.show_update_window(self.submit_product_update_details)
         
-        
+    def filter_button_pressed(self):
+        self.view.show_filter_window(self.submit_filter_settings)
+
     def submit_product_insert_details(self):
         #Once the window is closed, grab all values entered and submit to client
         product_details = self.view.product_details
@@ -75,6 +78,8 @@ class Controller(object):
         
         self.view.update_inventory_listbox(self.fetch_inventory())
 
+    def submit_filter_settings(self):
+        pass
 
     def delete_button_pressed(self):
         if not self.view.selected_item_id:
