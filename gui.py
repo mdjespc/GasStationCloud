@@ -254,13 +254,14 @@ class ProjectWindow:
         name_filter_entry.delete(0, tk.END)
 
         #Callback for submit button
+        #TODO Validate user input (needs to be formatted as a float, but passed on as a string)
         def get_entries():
             self.filter_settings = {
                 "name_filter" : name_filter_entry.get(),
                 "desc_filter" : name_filter_entry.get(),
                 "category_filter" : category_filter_entry.get(),
-                "min_price_filter" : float(min_price_entry.get()),
-                "max_price_filter" : float(max_price_entry.get())
+                "min_price_filter" : min_price_entry.get(),
+                "max_price_filter" : max_price_entry.get()
             }
 
             submit_filter_settings()

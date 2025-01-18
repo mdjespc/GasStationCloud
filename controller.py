@@ -81,17 +81,30 @@ class Controller(object):
     def submit_filter_settings(self):
         search_keys = self.view.filter_settings
 
-        name_search_key = search_keys["name_filter"]
-        desc_search_key = search_keys["desc_filter"]
-        category_search_key = search_keys["category_filter"]
-        min_price_search_key = search_keys["min_price_filter"]
-        max_price_search_key = search_keys["max_price_filter"]
+        name_search_key = search_keys["name_filter"]  if search_keys["name_filter"] else ""
+        desc_search_key = search_keys["desc_filter"]  if search_keys["desc_filter"] else ""
+        category_search_key = search_keys["category_filter"] if search_keys["category_filter"] else ""
+        min_price_search_key = search_keys["min_price_filter"] if search_keys["min_price_filter"] else "@min_price"
+        max_price_search_key = search_keys["max_price_filter"] if search_keys["max_price_filter"] else "@max_price"
 
         if not self.client.is_connected:
             self.view.show_connection_error_popup()
             return
 
+        items = self.client.fetch(
+            "inventory",
+            name_search_key,
+            desc_search_key,
+            category_search_key,
+            min_price_search_key,
+            max_price_search_key
+        )
         
+        #Process the fetched items into a list of strings
+        items = [",".join([str(value) for value in item]) for item in items]
+        self.view.update_inventory_listbox(items)
+        
+
 
 
     def delete_button_pressed(self):
