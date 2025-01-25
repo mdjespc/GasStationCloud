@@ -47,23 +47,11 @@ class Client:
         except mysql.connector.Error as err:
             raise ConnectionError("Error retrieving table data:", err)
         
-    def fetch(self, table_name, *filter_settings):
+    def fetch(self, query):
         if not self.cursor:
             raise ConnectionError("Database connection hs not yet been established.")
         
         try:
-            name_filter, desc_filter, category_filter, min_price_filter, max_price_filter = filter_settings
-
-            query = f'''
-                    SELECT *
-                    FROM {table_name}
-                    WHERE
-                        (product_name LIKE '%{name_filter}%' OR product_desc LIKE '%{desc_filter}%')
-                        AND (product_category LIKE '%{category_filter}%')
-                        AND (product_price >= {min_price_filter} OR {min_price_filter} IS NULL)
-                        AND (product_price <= {max_price_filter} OR {max_price_filter} IS NULL)
-                    '''
-            
             self.cursor.execute(query)
             return self.cursor.fetchall()
         

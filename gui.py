@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Label, Button, Entry, Listbox, Scrollbar
+from tkinter import Label, Button, Entry, Text, Listbox, Scrollbar
 from tkinter import messagebox, simpledialog, filedialog, scrolledtext
 from PIL import Image, ImageTk
 import os
@@ -269,6 +269,29 @@ class ProjectWindow:
 
         submit_button = Button(filter_window, text="Filter", command = get_entries)
         submit_button.grid(row = 4, column = 1)
+
+    def show_delete_window(self, matching_items, submit_delete_settings):
+        '''
+        Give option to delete single selected item, or similar items by percentage or amount.
+        '''
+        if not self.selected_item:
+            print("Item must be selected before performing the DELETE operation.")
+            return
+
+        delete_window = tk.Toplevel(self.root)
+        delete_window.geometry("500x300")
+
+        matching_item_count = len(matching_items)
+        info_message = f'''There are {matching_item_count} similar items in the database. Select the amount or percentage of 
+        similar items you would like to DELETE, or leave the fields below empty to DELETE a single item.
+        '''
+        info_label = Label(delete_window, text = info_message)
+        info_label.grid(row=0, column=0, padx=20, pady=20)
+
+        
+
+
+
 
 
     def show_connection_error_popup(self):
