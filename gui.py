@@ -14,8 +14,10 @@ class ProjectWindow:
     def _show_main_window(self):
         self.root = tk.Tk()
         self.root.title("Gas Station Cloud")
-        self.root.geometry("800x600")
+        self.root.geometry("435x500")
         self.root.resizable(True, True)
+
+        self.text_font = ("comfortaa", 9)
 
         #Application Icon
         icon_path = os.path.join("resources", "images", "icon.ico")
@@ -29,7 +31,7 @@ class ProjectWindow:
         #Create a canvas to show the background image
         canvas = tk.Canvas(self.root)
         canvas.create_image(0, 0, image = background_image, anchor = tk.NW)
-        canvas.grid(row = 0, column = 0, padx = 10, pady = 10)
+        canvas.grid(row = 0, column = 0, padx = 10, pady = 10, rowspan= 4, columnspan=4)
     
 
         
@@ -43,22 +45,32 @@ class ProjectWindow:
         menubar.add_cascade(label="Help", menu=help_menu)
 
         #Inventory labels for the business metrics
-        self.net_value_label = Label(self.root, text = "Net Value")
-        self.net_value_label.grid(row = 0, column = 0)
+        # self.net_value_label = Label(self.root, text = "Net Value")
+        # self.net_value_label.grid(row = 0, column = 0)
 
-        self.average_value_label = Label(self.root, text = "Average Value per Unit")
-        self.average_value_label.grid(row = 1, column = 0)
+        # self.average_value_label = Label(self.root, text = "Average Value per Unit")
+        # self.average_value_label.grid(row = 1, column = 0)
 
-        self.unit_count_label = Label(self.root, text = "Number of units in inventory")
-        self.unit_count_label.grid(row = 2, column = 0)
+        # self.unit_count_label = Label(self.root, text = "Number of units in inventory")
+        # self.unit_count_label.grid(row = 2, column = 0)
 
-        self.category_count_label = Label(self.root, text = "Number of categories")
-        self.category_count_label.grid(row = 3, column = 0)
+        # self.category_count_label = Label(self.root, text = "Number of categories")
+        # self.category_count_label.grid(row = 3, column = 0)
 
 
         #Inventory scrollable listbox
-        self.inventory_listbox = Listbox(self.root)
-        self.inventory_listbox.grid(row = 1, column = 1)
+        self.inventory_listbox = Listbox(self.root,
+                                         width=50,
+                                         height=20,
+                                         bd=7,
+                                         font=self.text_font,
+                                         highlightcolor="#60db81",
+                                         highlightbackground="#60db81", 
+                                         highlightthickness=10,                                                              
+                                         selectbackground="#119634",
+                                         relief="flat"
+                                         )
+        self.inventory_listbox.grid(row = 1, column = 0, rowspan=4, columnspan=4, padx = 25, pady = 15)
         #Bind the selection event
         self.inventory_listbox.bind("<<ListboxSelect>>", self.on_listbox_select)
         self.selected_item_id = None
@@ -70,17 +82,17 @@ class ProjectWindow:
 
 
         #Inventory management buttons
-        self.create_button = Button(self.root, text = "Insert to table")
-        self.create_button.grid(row = 0, column = 2, padx = 10, pady = 10)
+        self.create_button = Button(self.root, text = "Insert to table", font=self.text_font, bg="#107d60", fg="#ffffff")
+        self.create_button.grid(row = 0, column = 0, padx = 5, pady = 5)
 
-        self.filter_button = Button(self.root, text = "Filter")
-        self.filter_button.grid(row = 1, column = 2, padx = 10, pady = 10)
+        self.filter_button = Button(self.root, text = "Filter", font=self.text_font, bg="#107d60", fg="#ffffff")
+        self.filter_button.grid(row = 0, column = 1)
 
-        self.edit_button = Button(self.root, text = "Edit")
-        self.edit_button.grid(row = 2, column = 2, padx = 10, pady = 10)
+        self.edit_button = Button(self.root, text = "Edit", font=self.text_font, bg="#107d60", fg="#ffffff")
+        self.edit_button.grid(row = 0, column = 2)
 
-        self.delete_button = Button(self.root, text = "Delete from table")
-        self.delete_button.grid(row = 3, column = 2, padx = 10, pady = 10)
+        self.delete_button = Button(self.root, text = "Delete from table", font=self.text_font, bg="#7d1b10", fg="#ffffff")
+        self.delete_button.grid(row = 0, column = 3)
 
     # Function to handle item selection
     def on_listbox_select(self, event):
@@ -282,15 +294,13 @@ class ProjectWindow:
         delete_window.geometry("500x300")
 
         matching_item_count = len(matching_items)
-        info_message = f'''There are {matching_item_count} similar items in the database. Select the amount or percentage of 
-        similar items you would like to DELETE, or leave the fields below empty to DELETE a single item.
+        info_message = f'''There are {matching_item_count} similar items in the database. 
+
+        Select the amount or percentage of similar items you 
+        would like to DELETE, or leave the fields below empty to DELETE a single item.
         '''
         info_label = Label(delete_window, text = info_message)
         info_label.grid(row=0, column=0, padx=20, pady=20)
-
-        
-
-
 
 
 
