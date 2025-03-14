@@ -116,19 +116,19 @@ class Controller(object):
             return
         
         #Fetch all similar items to enable bulk deletion
-        id_search_key, name_search_key, desc_search_key, category_search_key, price_search_key = self.view.selected_item.split(",")
-        matching_items = self.client.fetch(
-            f'''
-                SELECT *
-                FROM inventory
-                WHERE
-                    (product_name LIKE '%{name_search_key}%' OR product_desc LIKE '%{desc_search_key}%')
-                    AND (product_category LIKE '%{category_search_key}%')
-                    AND (product_price = {price_search_key})
-                '''
-        )
-        self.view.show_delete_window(matching_items, None)
+        # id_search_key, name_search_key, desc_search_key, category_search_key, price_search_key = self.view.selected_item.split(",")
+        # matching_items = self.client.fetch(
+        #     f'''
+        #         SELECT *
+        #         FROM inventory
+        #         WHERE
+        #             (product_name LIKE '%{name_search_key}%' OR product_desc LIKE '%{desc_search_key}%')
+        #             AND (product_category LIKE '%{category_search_key}%')
+        #             AND (product_price = {price_search_key})
+        #         '''
+        # )
+        # self.view.show_delete_window(matching_items, None)
 
-        # self.client.delete("inventory", self.view.selected_item_id)
-        # self.view.selected_item_id = None
-        # self.view.update_inventory_listbox(self.fetch_inventory())
+        self.client.delete("inventory", self.view.selected_item_id)
+        self.view.selected_item_id = None
+        self.view.update_inventory_listbox(self.fetch_inventory())

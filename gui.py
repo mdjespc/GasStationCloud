@@ -26,14 +26,17 @@ class ProjectWindow:
         #Background image
         background_image_path = os.path.join("resources", "images", "background.png")
         background_image = Image.open(background_image_path)
-        background_image = ImageTk.PhotoImage(background_image)
+        background_image = background_image.resize((435, 500), Image.LANCZOS)
+        self.background_image = ImageTk.PhotoImage(background_image)
         
         #Create a canvas to show the background image
-        canvas = tk.Canvas(self.root)
-        canvas.create_image(0, 0, image = background_image, anchor = tk.NW)
-        canvas.grid(row = 0, column = 0, padx = 10, pady = 10, rowspan= 4, columnspan=4)
+        canvas = tk.Canvas(self.root, width=435, height=500)
+        canvas.create_image(0, 0, image = self.background_image, anchor = tk.NW)
+        canvas.grid(row = 0, column = 0, padx = 0, pady = 0, rowspan= 4, columnspan=4, sticky = "nsew")
     
-
+        #Make Sure the Canvas Expands with the Window
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
         
         #Create a  bar
         menubar = tk.Menu(self.root)
@@ -82,16 +85,16 @@ class ProjectWindow:
 
 
         #Inventory management buttons
-        self.create_button = Button(self.root, text = "Insert to table", font=self.text_font, bg="#107d60", fg="#ffffff")
+        self.create_button = Button(self.root, text = "Insert to table", font=self.text_font, bg="#107d60", fg="#ffffff", relief=tk.GROOVE)
         self.create_button.grid(row = 0, column = 0, padx = 5, pady = 5)
 
-        self.filter_button = Button(self.root, text = "Filter", font=self.text_font, bg="#107d60", fg="#ffffff")
+        self.filter_button = Button(self.root, text = "Filter", font=self.text_font, bg="#107d60", fg="#ffffff", relief=tk.GROOVE)
         self.filter_button.grid(row = 0, column = 1)
 
-        self.edit_button = Button(self.root, text = "Edit", font=self.text_font, bg="#107d60", fg="#ffffff")
+        self.edit_button = Button(self.root, text = "Edit", font=self.text_font, bg="#107d60", fg="#ffffff", relief=tk.GROOVE)
         self.edit_button.grid(row = 0, column = 2)
 
-        self.delete_button = Button(self.root, text = "Delete from table", font=self.text_font, bg="#7d1b10", fg="#ffffff")
+        self.delete_button = Button(self.root, text = "Delete from table", font=self.text_font, bg="#7d1b10", fg="#ffffff", relief=tk.GROOVE)
         self.delete_button.grid(row = 0, column = 3)
 
     # Function to handle item selection
@@ -113,38 +116,42 @@ class ProjectWindow:
 
     def show_insert_window(self, submit_product_details):
         insert_window = tk.Toplevel(self.root)
-        insert_window.geometry("500x300")
+        insert_window.geometry("300x250")
+
+        canvas = tk.Canvas(insert_window, width=300, height=250)
+        canvas.create_image(0, 0, image = self.background_image, anchor = tk.NW)
+        canvas.grid(row = 0, column = 0, padx = 0, pady = 0, rowspan= 7, columnspan=4, sticky = "nsew")
 
         self.product_details = dict()
 
-        product_name_label = Label(insert_window, text = "Product name: ")
+        product_name_label = Label(insert_window, text = "Product name", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         product_name_label.grid(row = 0, column = 0)
-        product_name_entry = Entry(insert_window)
+        product_name_entry = Entry(insert_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         product_name_entry.grid(row = 0, column = 2)
         product_name_entry.delete(0, tk.END)
 
-        product_desc_label = Label(insert_window, text = "Product description: ")
+        product_desc_label = Label(insert_window, text = "Product description", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         product_desc_label.grid(row = 1, column = 0)
-        product_desc_entry = Entry(insert_window)
+        product_desc_entry = Entry(insert_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         product_desc_entry.grid(row = 1, column = 2)
         product_desc_entry.delete(0, tk.END)
 
-        product_category_label = Label(insert_window, text = "Product category: ")
+        product_category_label = Label(insert_window, text = "Product category", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         product_category_label.grid(row = 2, column = 0)
-        product_category_entry = Entry(insert_window)
+        product_category_entry = Entry(insert_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         product_category_entry.grid(row = 2, column = 2)
         product_category_entry.delete(0, tk.END)
 
-        product_price_label = Label(insert_window, text = "Product price: ")
+        product_price_label = Label(insert_window, text = "Product price", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         product_price_label.grid(row = 3, column = 0)
-        product_price_entry = Entry(insert_window)
+        product_price_entry = Entry(insert_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         product_price_entry.grid(row = 3, column = 2)
         product_price_entry.delete(0, tk.END)
 
 
-        product_quantity_label = Label(insert_window, text = "Quantity: ")
+        product_quantity_label = Label(insert_window, text = "Quantity", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         product_quantity_label.grid(row = 4, column = 0)
-        product_quantity_entry = Entry(insert_window)
+        product_quantity_entry = Entry(insert_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         product_quantity_entry.grid(row = 4, column = 2)
         product_quantity_entry.delete(0, tk.END)
         product_quantity_entry.insert(0, "1")
@@ -165,7 +172,7 @@ class ProjectWindow:
             #messagebox.showinfo("New Item", "New item has been added to the database.")
             
 
-        submit_button = Button(insert_window, text="Submit", command = get_entries)
+        submit_button = Button(insert_window, text="Submit", command = get_entries, font=self.text_font, bg="#107d60", fg="#ffffff", relief=tk.GROOVE)
         submit_button.grid(row = 6, column = 1)
 
     
@@ -175,36 +182,40 @@ class ProjectWindow:
             return
 
         update_window = tk.Toplevel(self.root)
-        update_window.geometry("500x300")
+        update_window.geometry("300x250")
+
+        canvas = tk.Canvas(update_window, width=300, height=250)
+        canvas.create_image(0, 0, image = self.background_image, anchor = tk.NW)
+        canvas.grid(row = 0, column = 0, padx = 0, pady = 0, rowspan= 7, columnspan=4, sticky = "nsew")
 
         self.product_details = dict()
         product_name, product_desc, product_category, product_price = self.selected_item.split(",")[1:]
 
 
-        product_name_label = Label(update_window, text = "Product name: ")
+        product_name_label = Label(update_window, text = "Product name", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         product_name_label.grid(row = 0, column = 0)
-        product_name_entry = Entry(update_window)
+        product_name_entry = Entry(update_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         product_name_entry.grid(row = 0, column = 2)
         product_name_entry.delete(0, tk.END)
         product_name_entry.insert(0, product_name)
 
-        product_desc_label = Label(update_window, text = "Product description: ")
+        product_desc_label = Label(update_window, text = "Product description", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         product_desc_label.grid(row = 1, column = 0)
-        product_desc_entry = Entry(update_window)
+        product_desc_entry = Entry(update_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         product_desc_entry.grid(row = 1, column = 2)
         product_desc_entry.delete(0, tk.END)
         product_desc_entry.insert(0, product_desc)
 
-        product_category_label = Label(update_window, text = "Product category: ")
+        product_category_label = Label(update_window, text = "Product category", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         product_category_label.grid(row = 2, column = 0)
-        product_category_entry = Entry(update_window)
+        product_category_entry = Entry(update_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         product_category_entry.grid(row = 2, column = 2)
         product_category_entry.delete(0, tk.END)
         product_category_entry.insert(0, product_category)
 
-        product_price_label = Label(update_window, text = "Product price: ")
+        product_price_label = Label(update_window, text = "Product price", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         product_price_label.grid(row = 3, column = 0)
-        product_price_entry = Entry(update_window)
+        product_price_entry = Entry(update_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         product_price_entry.grid(row = 3, column = 2)
         product_price_entry.delete(0, tk.END)
         product_price_entry.insert(0, product_price)
@@ -222,7 +233,7 @@ class ProjectWindow:
             update_window.destroy()
             
 
-        submit_button = Button(update_window, text="Submit", command = get_entries)
+        submit_button = Button(update_window, text="Submit", command = get_entries, font=self.text_font, bg="#107d60", fg="#ffffff", relief=tk.GROOVE)
         submit_button.grid(row = 6, column = 1)
 
     def show_filter_window(self, submit_filter_settings):
@@ -236,32 +247,36 @@ class ProjectWindow:
         Display the search results by passing them on to the "update_inventory_listbox" method
         '''
         filter_window = tk.Toplevel(self.root)
-        filter_window.geometry("500x300")
+        filter_window.geometry("400x150")
 
+        canvas = tk.Canvas(filter_window, width=400, height=150)
+        canvas.create_image(0, 0, image = self.background_image, anchor = tk.NW)
+        canvas.grid(row = 0, column = 0, padx = 0, pady = 0, rowspan= 7, columnspan=4, sticky = "nsew")
+        
         self.filter_settings = dict()
 
-        name_filter_label = Label(filter_window, text = "Filter by name:")
+        name_filter_label = Label(filter_window, text = "Filter by name", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         name_filter_label.grid(row=0, column=0)
-        name_filter_entry = Entry(filter_window)
+        name_filter_entry = Entry(filter_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         name_filter_entry.grid(row=0, column=1)
         name_filter_entry.delete(0, tk.END)
 
-        category_filter_label = Label(filter_window, text = "Filter by category:")
+        category_filter_label = Label(filter_window, text = "Filter by category", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         category_filter_label.grid(row=1, column=0)
-        category_filter_entry = Entry(filter_window)
+        category_filter_entry = Entry(filter_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         category_filter_entry.grid(row=1, column=1)
         category_filter_entry.delete(0, tk.END)
 
-        price_filter_label = Label(filter_window, text = "Filter by price:")
+        price_filter_label = Label(filter_window, text = "Filter by price", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         price_filter_label.grid(row = 2, column = 0)
-        min_price_label = Label(filter_window, text = "Min:")
+        min_price_label = Label(filter_window, text = "Min", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         min_price_label.grid(row=3, column = 0)
-        min_price_entry = Entry(filter_window)
+        min_price_entry = Entry(filter_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         min_price_entry.grid(row=3, column=1)
         min_price_entry.delete(0, tk.END)
-        max_price_label = Label(filter_window, text = "Max:")
+        max_price_label = Label(filter_window, text = "Max", font=self.text_font, bg="#119634", fg="#ffffff", relief=tk.RAISED)
         max_price_label.grid(row=3, column = 2)
-        max_price_entry = Entry(filter_window)
+        max_price_entry = Entry(filter_window, bg="#60db81", font=self.text_font, fg="#000000", relief=tk.FLAT)
         max_price_entry.grid(row=3, column=3)
         name_filter_entry.delete(0, tk.END)
 
@@ -279,7 +294,7 @@ class ProjectWindow:
             submit_filter_settings()
             filter_window.destroy()
 
-        submit_button = Button(filter_window, text="Filter", command = get_entries)
+        submit_button = Button(filter_window, text="Filter", command = get_entries, font=self.text_font, bg="#107d60", fg="#ffffff", relief=tk.GROOVE)
         submit_button.grid(row = 4, column = 1)
 
     def show_delete_window(self, matching_items, submit_delete_settings):
